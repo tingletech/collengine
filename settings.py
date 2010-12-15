@@ -1,24 +1,16 @@
 # Django settings for collengine project.
 
+from djangoappengine.settings_base import *
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Brian Tingle', 'brian.tingle.cdlib.org@gmail.com'),
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -50,23 +42,25 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/files/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/static/"
-STATICFILES_ROOT = ''
+STATICFILES_ROOT = os.path.join(os.path.dirname(__file__), '_generated_media')
 
 # URL that handles the static files served from STATICFILES_ROOT.
 # Example: "http://static.lawrence.com/", "http://example.com/static/"
-STATICFILES_URL = '/static/'
+STATICFILES_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # A list of locations of additional static files
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = ( 
+    os.path.join(os.path.dirname(__file__), 'static'), 
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -77,7 +71,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'y_$tju3n1&5^o=5gk^i54$u4%2x$0(d-+ehg92!p!7k#_=*v8i'
+SECRET_KEY = 'yle%y+4nvy2u9jd0ob8yzutden$r#xg9s(xe-ln_kzxo$jw7y-'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -97,23 +91,25 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'collengine.urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
+    'djangoappengine',
+#    'django.contrib.admin',
+#    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'djangotoolbox',
 )
+
+# This test runner captures stdout and associates tracebacks with their
+# corresponding output. Helps a lot with print-debugging.
+TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -137,3 +133,13 @@ LOGGING = {
         },
     }
 }
+
+# Activate django-dbindexer if available
+try:
+    import dbindexer
+    DATABASES['native'] = DATABASES['default']
+    DATABASES['default'] = {'ENGINE': 'dbindexer', 'TARGET': 'native'}
+    INSTALLED_APPS += ('dbindexer',)
+except ImportError:
+    pass
+
