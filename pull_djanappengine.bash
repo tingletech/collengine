@@ -11,5 +11,5 @@ mv djangotoolbox/djangotoolbox djangotoolbox-djangotoolbox
 rm -rf djangotoolbox
 mv djangotoolbox-djangotoolbox djangotoolbox
 mv django-dbindexer/dbindexer dbindexer
-rm -rf django-nonrel djangotoolbax django-dbindexer
+rm -rf django-nonrel djangotoolbox django-dbindexer
 
