@@ -1,0 +1,38 @@
+Collengine: A collection engine
+===============================
+
+Brian Tingle
+ Digital Special Collections
+  California Digital Library
+   University of California
+    Office of the President
+
+Collengine is designed to be a simple tool to describe collections
+of items for digitization projects.
+
+Models
+======
+
+User
+----
+Default django user auth
+
+Collections
+-----------
+Minimal colleciton level record at the intellectual level of an EAD finding aid.
+(right now very skeletal; but will be based on DC)
+(could allow attached PDFs)
+
+Institutions
+------------
+Institution contributing content to the project
+use ARK to link to record in voro dashboard records?
+or copy voro institution model into this app?
+
+Items
+-----
+Based on Dublin Core; "inherits" data from Collection and Institution records.
+(could allow attached files)
+(could allow descriptions to be HTML)
+(could allow attached metadata files)
+(eventual export to METS)

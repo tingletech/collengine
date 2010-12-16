@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'djangotoolbox',
+    'items',
 )
 
 # This test runner captures stdout and associates tracebacks with their

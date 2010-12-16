@@ -3,6 +3,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.importlib import import_module
+from django import forms
 
 __all__ = ('RawField', 'ListField', 'DictField', 'SetField',
            'BlobField', 'EmbeddedModelField')
@@ -100,6 +101,17 @@ class AbstractIterableField(models.Field):
     def formfield(self, **kwargs):
         raise NotImplementedError('No form field implemented for %r' % type(self))
 
+class ListWidget(forms.TextInput):
+    def render(self, name, value, attrs=None):
+        if isinstance(value, (list, tuple)):
+            value = u', '.join([unicode(v) for v in value])
+        return super(ListWidget, self).render(name, value, attrs)
+    
+class ListFormField(forms.Field):
+    widget = ListWidget
+    def clean(self, value):
+        return [v.strip() for v in value.split(',') if len(v.strip()) > 0]
+
 class ListField(AbstractIterableField):
     """
     Field representing a Python ``list``.
@@ -123,6 +135,12 @@ class ListField(AbstractIterableField):
         if values is not None and self.ordering is not None:
             values.sort(key=self.ordering)
         return values
+
+    def formfield(self, **kwargs): 
+        defaults = {'form_class': ListFormField}
+        defaults.update(kwargs)
+        # return super(ListField, self).formfield(**defaults)
+        return super(AbstractIterableField,self).formfield(**defaults) 
 
 class SetField(AbstractIterableField):
     """
