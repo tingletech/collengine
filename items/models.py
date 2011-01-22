@@ -63,6 +63,6 @@ class Item(models.Model):
     def __unicode__(self):
         return self.title
     
-class digitalFile(models.Model):
+class DigitalFile(models.Model):
     fileName = models.CharField(max_length=200)
     master = models.ForeignKey(Item)

@@ -1,4 +1,4 @@
-from .models import Item
+from .models import Item, DigitalFile
 from django.contrib import admin
 
 class ItemAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class ItemAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Item, ItemAdmin)
+admin.site.register(DigitalFile)
