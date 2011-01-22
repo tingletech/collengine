@@ -1,56 +1,68 @@
 from djangotoolbox.fields import ListField, SetField, DictField, EmbeddedModelField
+from institutions.models import Institution
+from archival_collections.models import Collection
+from vocabularies.models import Name, Place, Topic
 from django.db import models
+from django.contrib import admin
 
 # Create your models here.
 
-class Institution(models.Model):
-    label = models.CharField(max_length=200)
-    ark = models.CharField(max_length=40)
-    editors = ListField(models.CharField(max_length=50))
-    
-    def __unicode__(self):
-        return self.label
-
-class Collection(models.Model):
-    label = models.CharField(max_length=200)
-    ark = models.CharField(max_length=40)
-
-    def __unicode__(self):
-        return self.label
-
 class Item(models.Model):
-    DC_TYPES = (
-        (u'Collection', u'Collection'),
-        (u'Dataset', u'Dataset'),
-        (u'Event', u'Event'),
-        (u'Image', u'Image'),
-        (u'InteractiveResource', u'Interactive Resource'),
-        (u'MovingImage', u'Moving Image'),
-        (u'PhysicalObject', u'Physical Object'),
-        (u'Service', u'Service'),
-        (u'Software', u'Software'),
-        (u'Sound', u'Sound'),
-        (u'StillImage', u'Still Image'),
-        (u'Text', u'Text'),
-    )
-    contributor = ListField(models.CharField(max_length=200))
-    coverage = ListField(models.CharField(max_length=200))
-    creator = ListField(models.CharField(max_length=200))
-    date = ListField(models.CharField(max_length=200))
-    description = ListField(models.TextField())
-    format = ListField(models.CharField(max_length=200))
-    identifier = ListField(models.CharField(max_length=200))
-    ark_identifier = models.CharField(max_length=50)
-    language = ListField(models.CharField(max_length=200))
-    publisher = ListField(models.CharField(max_length=200))
-    courtesy_of_publisher = models.ForeignKey(Institution)
-    relation = ListField(models.CharField(max_length=200))
-    relation_parent_collection = models.ForeignKey(Collection)
-    rights = ListField(models.CharField(max_length=200))
-    source = ListField(models.CharField(max_length=200))
-    subject = ListField(models.CharField(max_length=200))
-    title = ListField(models.CharField(max_length=200))
-    type = models.CharField(max_length=2, choices=DC_TYPES)
+    title = models.CharField(max_length=200)
+    contributor = models.ForeignKey(Institution)
+    projectId = models.CharField(max_length=200)
+    localId = models.CharField(max_length=200)
+    aggregatorId = models.CharField(max_length=200)
+    creatorWriter = models.ForeignKey(Name, related_name="writer")
+    creatorDirector = models.ForeignKey(Name, related_name="director")
+    creatorProducer = models.ForeignKey(Name, related_name="producer")
+    countryOfCreation = models.CharField(max_length=2)
+    dateCreated = models.DateField()
+    dateIssued = models.DateField()
+    formatMediaType = models.CharField(max_length=200)
+    formatPhysicalY = models.CharField(max_length=200)
+    silent = models.CharField(max_length=200)
+    formatColors = models.CharField(max_length=200)
+    runningSpeed = models.CharField(max_length=200)
+    totalReels = models.CharField(max_length=200)
+    formatGeneration = models.CharField(max_length=200)
+    formatDuration = models.CharField(max_length=200)
+    fileNameUniquePart = models.CharField(max_length=200)
 
+    alternativeTitle = models.CharField(max_length=200)
+    seriesTitle = models.CharField(max_length=200)
+    contributorCamera = models.CharField(max_length=200)
+    contributorEditor = models.CharField(max_length=200)
+    contributorSound = models.CharField(max_length=200)
+    contributorMusic = models.CharField(max_length=200)
+    contributorCast = models.CharField(max_length=200)
+    contributorMusician = models.CharField(max_length=200)
+    contributorPublisher = models.CharField(max_length=200)
+    contributorDistributor = models.CharField(max_length=200)
+    collection = models.ForeignKey(Collection)
+    descriptionGeneralNote = models.TextField()
+    descriptionAbstract = models.TextField()
+    descriptionContents = models.TextField()
+    descriptionTranscript = models.TextField()
+    descriptionShotList = models.TextField()
+    language = models.CharField(max_length=2)
+    subjectName = models.ForeignKey(Name, related_name="subject_name")
+    subjectPlace = models.ForeignKey(Place)
+    subjectTopic = models.ForeignKey(Topic)
+    genreForm = models.CharField(max_length=200)
+
+    formatPhysicalX = models.CharField(max_length=200)
+    formatStandard = models.CharField(max_length=200)
+    carrierFormat = models.CharField(max_length=200)
+    carrierId = models.CharField(max_length=200)
+    carrierPartNumber = models.CharField(max_length=200)
+    carrierAdditionalPhysicalDescription = models.CharField(max_length=200)
+    carrierCondition = models.CharField(max_length=200)
+    carrierAssessedDate = models.CharField(max_length=200)
+        
     def __unicode__(self):
-        return self.label
+        return self.title
+    
+class digitalFile(models.Model):
+    fileName = models.CharField(max_length=200)
+    master = models.ForeignKey(Item)

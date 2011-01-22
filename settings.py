@@ -105,6 +105,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'djangotoolbox',
     'items',
+    'vocabularies',
+    'institutions',
+    'archival_collections',
 )
 
 # This test runner captures stdout and associates tracebacks with their

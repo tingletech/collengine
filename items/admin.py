@@ -1,6 +1,19 @@
-from .models import Institution, Collection, Item
+from .models import Item
 from django.contrib import admin
 
-admin.site.register(Institution)
-admin.site.register(Collection)
-admin.site.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Descriptive + Technical', {
+            'fields': ('title', 'contributor', 'projectId', 'localId', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'formatPhysicalX', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', 'fileNameUniquePart',)
+        }),
+        ('Additional Descriptive', {
+            'classes': ('collapse',),
+            'fields': ( 'alternativeTitle', 'seriesTitle', 'contributorCamera', 'contributorEditor', 'contributorSound', 'contributorMusic','contributorCast', 'contributorMusician', 'contributorPublisher','contributorDistributor', 'collection', 'descriptionGeneralNote','descriptionAbstract', 'descriptionContents', 'descriptionTranscript','descriptionShotList', 'language', 'subjectName', 'subjectPlace', 'subjectTopic', 'genreForm')
+        }),
+        ('Additional Technical', {
+            'classes': ('collapse',),
+            'fields': ('formatPhysicalY', 'formatStandard', 'carrierFormat', 'carrierId', 'carrierPartNumber', 'carrierAdditionalPhysicalDescription', 'carrierCondition', 'carrierAssessedDate')
+        }),
+    )
+
+admin.site.register(Item, ItemAdmin)
