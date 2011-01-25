@@ -7,6 +7,118 @@ from django.contrib import admin
 
 # Create your models here.
 
+MEDIATYPE_CHOICES = ( 'moving image', 'sound',)
+
+PHYSICAL_X_CHOICES = ( 
+  '1/4" audiocassette',
+  '1/4" audio open reel',
+  '1/2" video open reel',
+  '35 mm film',
+  '16 mm film',
+  '8 mm film',
+  'Super 8 mm film',
+)
+
+SOUND_CHARACTERISTICS_CHOICES = ( 'sound', 'silent',)
+
+COLORS_CHOICES = ( 'color', 'black & white',)
+
+GENERATION_CHOICES = (
+  'camera original', 
+  'master',
+  'submaster'
+  'unknown'
+)
+
+STATE_CHOICES = (
+  'preservation master',
+  'production master',
+  'mezzanine/copy master',
+  'access derivative',
+)
+
+DIGITAL_CHOICES = (
+  'uncompressed .mov',
+  'dv5',
+  'MPEG4',
+  'broadcast wave',
+  'MP3',
+)
+
+STORAGE_MEDIUM_CHOICES = (
+  'server',
+  'HDD',
+  'DVD',
+)
+
+DEFINITION_CHOICES = (
+  'Standard Definition (SD)',
+  'High Definition (HD)',
+)
+
+CODECQUALITY_CHOICES = (
+  'lossless',
+  'lossy',
+)
+
+BITDEPTH_CHOICES = (
+  '10 bit',
+  '8 bit',
+)
+
+SAMPLING_RATE_CHOICES = (
+  'fixed',
+  'variable',
+)
+
+FRAMESIZE_CHOICES = (
+  '525',
+  '625',
+  '720',
+  '1080',
+)
+
+SOUND_LINEAR_CHOICES = (
+  'sound linear',
+  'embedded',
+  'both',
+)
+
+SOUND_ANNOTATION_CHOICES = (
+  'mono',
+  'stereo',
+  'surround',
+)
+
+MIX_TYPE_CHOICES = (
+  'music',
+  'dialogue and music',
+  'interview',
+  'field recording',
+)
+
+VIDEO_STANDARD_CHOICES = (
+  'NTSC',
+  'PAL',
+)
+
+VIDEO_ENCODING_CHOICES = (
+  'composite',
+  'component',
+)
+
+VALIDATION_SOFTWARE_CHOICES = (
+  'JHOVE2',
+  'Terminal',
+)
+
+EVENT_CHOICES = (
+  'Ingested',
+  'Migrated',
+  'Backed-up',
+  'Obsolescence rating',
+)
+
 class Item(models.Model):
     title = models.CharField(max_length=200)
     contributor = models.ForeignKey(Institution)
