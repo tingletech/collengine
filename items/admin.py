@@ -4,7 +4,7 @@ from django.contrib import admin
 class ItemAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Descriptive + Technical', {
-            'fields': ('title', 'contributor', 'projectId', 'localId', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'formatPhysicalY', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', 'fileNameUniquePart',)
+            'fields': ('title', 'contributor', 'projectId', 'localId', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'physicalFormat', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', 'fileNameUniquePart',)
         }),
         ('Additional Descriptive', {
             'classes': ('collapse',),
@@ -12,7 +12,7 @@ class ItemAdmin(admin.ModelAdmin):
         }),
         ('Additional Technical', {
             'classes': ('collapse',),
-            'fields': ('formatPhysicalX', 'formatStandard', 'carrierFormat', 'carrierId', 'carrierPartNumber', 'carrierAdditionalPhysicalDescription', 'carrierCondition', 'carrierAssessedDate')
+            'fields': ('stockManufacturer', 'formatStandard', 'carrierFormat', 'carrierId', 'carrierPartNumber', 'carrierAdditionalPhysicalDescription', 'carrierCondition', 'carrierAssessedDate')
         }),
     )
 

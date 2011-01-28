@@ -7,116 +7,125 @@ from django.contrib import admin
 
 # Create your models here.
 
-MEDIATYPE_CHOICES = ( 'moving image', 'sound',)
-
-PHYSICAL_X_CHOICES = ( 
-  '1/4" audiocassette',
-  '1/4" audio open reel',
-  '1/2" video open reel',
-  '35 mm film',
-  '16 mm film',
-  '8 mm film',
-  'Super 8 mm film',
+MEDIA_TYPE_CHOICES = ( 
+  ('movi', 'moving image', ),
+  ('soun', 'sound',),
 )
 
-SOUND_CHARACTERISTICS_CHOICES = ( 'sound', 'silent',)
+PHYSICAL_FORMAT_CHOICES = ( 
+  ('4ac', '1/4" audiocassette',),
+  ('4aor', '1/4" audio open reel',),
+  ('2vor', '1/2" video open reel',),
+  ('35fl', '35 mm film',),
+  ('16fl', '16 mm film',),
+  ('8fl', '8 mm film',),
+  ('s8fl', 'Super 8 mm film',),
+)
 
-COLORS_CHOICES = ( 'color', 'black & white',)
+SOUND_CHARACTERISTICS_CHOICES = ( 
+  ('soun', 'sound', ),
+  ('sile','silent',)
+)
+
+COLORS_CHOICES = ( 
+  ('colo', 'color', ),
+  ('b&w', 'black & white',),
+)
 
 GENERATION_CHOICES = (
-  'camera original', 
-  'master',
-  'submaster'
-  'unknown'
+  ('orig', 'camera original', ),
+  ('mast', 'master',),
+  ('subm', 'submaster'),
+  ('unkn', 'unknown'),
 )
 
 STATE_CHOICES = (
-  'preservation master',
-  'production master',
-  'mezzanine/copy master',
-  'access derivative',
+  ('pres', 'preservation master',),
+  ('prod', 'production master',),
+  ('mezz', 'mezzanine/copy master',),
+  ('acce', 'access derivative',),
 )
 
 DIGITAL_CHOICES = (
-  'uncompressed .mov',
-  'dv5',
-  'MPEG4',
-  'broadcast wave',
-  'MP3',
+  ('umov', 'uncompressed .mov',),
+  ('dv5', 'dv5',),
+  ('mpg4', 'MPEG4',),
+  ('bwav', 'broadcast wave',),
+  ('mp3', 'MP3',),
 )
 
 STORAGE_MEDIUM_CHOICES = (
-  'server',
-  'HDD',
-  'DVD',
+  ('serv', 'server',),
+  ('HDD', 'HDD',),
+  ('DVD', 'DVD',),
 )
 
 DEFINITION_CHOICES = (
-  'Standard Definition (SD)',
-  'High Definition (HD)',
+  ('SD', 'Standard Definition (SD)',),
+  ('HD', 'High Definition (HD)',),
 )
 
 CODECQUALITY_CHOICES = (
-  'lossless',
-  'lossy',
+  ('less', 'lossless',),
+  ('loss', 'lossy',),
 )
 
 BITDEPTH_CHOICES = (
-  '10 bit',
-  '8 bit',
+  ('10b', '10 bit',),
+  ('8b', '8 bit',),
 )
 
 SAMPLING_RATE_CHOICES = (
-  'fixed',
-  'variable',
+  ('fix', 'fixed',),
+  ('var', 'variable',),
 )
 
 FRAMESIZE_CHOICES = (
-  '525',
-  '625',
-  '720',
-  '1080',
+  ('525', '525',),
+  ('625', '625',),
+  ('720', '720',),
+  ('1080', '1080',),
 )
 
 SOUND_LINEAR_CHOICES = (
-  'sound linear',
-  'embedded',
-  'both',
+  ('slin', 'sound linear',),
+  ('embe', 'embedded',),
+  ('both', 'both',),
 )
 
 SOUND_ANNOTATION_CHOICES = (
-  'mono',
-  'stereo',
-  'surround',
+  ('mono', 'mono',),
+  ('ster', 'stereo',),
+  ('surr', 'surround',),
 )
 
 MIX_TYPE_CHOICES = (
-  'music',
-  'dialogue and music',
-  'interview',
-  'field recording',
+  ('musi', 'music',),
+  ('d+m', 'dialogue and music',),
+  ('inte', 'interview',),
+  ('fiel', 'field recording',),
 )
 
 VIDEO_STANDARD_CHOICES = (
-  'NTSC',
-  'PAL',
+  ('NTSC', 'NTSC',),
+  ('PAL', 'PAL',),
 )
 
 VIDEO_ENCODING_CHOICES = (
-  'composite',
-  'component',
+  ('site', 'composite',),
+  ('nent', 'component',),
 )
 
 VALIDATION_SOFTWARE_CHOICES = (
-  'JHOVE2',
-  'Terminal',
+  ('jhov', 'JHOVE2',),
+  ('term', 'Terminal',),
 )
 
 EVENT_CHOICES = (
-  'Ingested',
-  'Migrated',
-  'Backed-up',
-  'Obsolescence rating',
+  ('in', 'Ingested',),
+  ('migr', 'Migrated',),
+  ('back', 'Backed-up',),
+  ('rate', 'Obsolescence rating',),
 )
 
 class Item(models.Model):
@@ -131,13 +140,13 @@ class Item(models.Model):
     countryOfCreation = models.CharField(max_length=2)
     dateCreated = models.DateField()
     dateIssued = models.DateField(null=True, blank=True)
-    formatMediaType = models.CharField(max_length=200)
-    formatPhysicalY = models.CharField(max_length=200)
-    silent = models.CharField(max_length=200)
-    formatColors = models.CharField(max_length=200)
+    formatMediaType = models.CharField(max_length=4, choices=MEDIA_TYPE_CHOICES)
+    physicalFormat = models.CharField(max_length=4, choices=PHYSICAL_FORMAT_CHOICES)
+    silent = models.CharField(max_length=4, choices=SOUND_CHARACTERISTICS_CHOICES)
+    formatColors = models.CharField(max_length=4, choices=COLORS_CHOICES)
     runningSpeed = models.CharField(max_length=200)
     totalReels = models.IntegerField()
-    formatGeneration = models.CharField(max_length=200)
+    formatGeneration = models.CharField(max_length=4, choices=GENERATION_CHOICES)
     formatDuration = models.CharField(max_length=200)
     fileNameUniquePart = models.CharField(max_length=200)
 
@@ -163,14 +172,14 @@ class Item(models.Model):
     subjectTopic = models.ForeignKey(Topic, null=True, blank=True)
     genreForm = models.CharField(max_length=200, blank=True)
 
-    formatPhysicalX = models.CharField(max_length=200, blank=True)
-    formatStandard = models.CharField(max_length=200, blank=True)
-    carrierFormat = models.CharField(max_length=200, blank=True)
+    stockManufacturer = models.CharField(max_length=200, blank=True)
+    formatStandard = models.CharField(max_length=4, blank=True, choices=VIDEO_STANDARD_CHOICES)
+    carrierFormat = models.CharField(max_length=4, blank=True, choices=VIDEO_ENCODING_CHOICES)
     carrierId = models.CharField(max_length=200, blank=True)
     carrierPartNumber = models.CharField(max_length=200, blank=True)
     carrierAdditionalPhysicalDescription = models.CharField(max_length=200, blank=True)
     carrierCondition = models.CharField(max_length=200, blank=True)
-    carrierAssessedDate = models.CharField(max_length=200, blank=True)
+    carrierAssessedDate = models.DateField(null=True, blank=True)
         
     def __unicode__(self):
         return self.title
