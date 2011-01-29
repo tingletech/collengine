@@ -7,6 +7,8 @@ from django.contrib import admin
 
 # Create your models here.
 
+# hardcoded controlled vocabularies
+
 MEDIA_TYPE_CHOICES = ( 
   ('movi', 'moving image', ),
   ('soun', 'sound',),
@@ -65,7 +67,7 @@ DEFINITION_CHOICES = (
   ('HD', 'High Definition (HD)',),
 )
 
-CODECQUALITY_CHOICES = (
+CODEC_QUALITY_CHOICES = (
   ('less', 'lossless',),
   ('loss', 'lossy',),
 )
@@ -130,7 +132,7 @@ EVENT_CHOICES = (
 
 class Item(models.Model):
     # 1 Descriptive + Technical
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, help_text="help text blah blah")
     contributor = models.ForeignKey(Institution)
     projectId = models.CharField(max_length=255)
     localId = models.CharField(max_length=255)
@@ -208,53 +210,62 @@ class DigitalFile(models.Model):
     # formatStandard + version
     fourCC = models.CharField(max_length=4)			# http://www.fourcc.org/codecs.php
 
-    # formatEncoding	255 char
-    # codecQuality	lossless -- lossy
-    #formatDataRate	integer (in Mbps)
-    #formatBitDepth	10 bit -- 8 bit
-    #formatSamplingRate	fixed -- variable
-    #formatFileSize	integer 
-    #formatTimeStart	timecode
-    #sampleRatio	ratio of integers
-    #formatFrameSize	525 -- 625 -- 720 -- 1080
-    #formatAspectRatio	ratio of integers
-    #formatFrameRate	integer
-    #fileCreated	date
-    #formatFrameSize	integer (in pixels per line)
-    #formatChannelConfiguration	255 char
-    #soundChannels	integer
-    #soundLinear	sound linear -- embedded -- both
-    #soundAnnotation	mono -- stereo -- surround
-    #mixType	music -- dialogue and music -- interview -- field recording
-    #offloadDate	date
+    formatEncoding = models.CharField(max_length=255)
+    codecQuality = models.CharField(max_length=4, choices=CODEC_QUALITY_CHOICES)
+    # formatDataRate	integer (in Mbps)
+    formatDataRate = models.CharField(max_length=255)
+    # integer won't work, see http://www.pbcore.org/PBCore/formatDataRate.html
+    #      models.DecimalField(..., max_digits=5, decimal_places=2)
+    formatBitDepth = models.CharField(max_length=4, choices=BITDEPTH_CHOICES)
+    formatSamplingRate = models.CharField(max_length=4, choices=SAMPLING_RATE_CHOICES)
+    fileSizeBytes = models.IntegerField()
+    formatTimeStart = models.CharField(max_length=25)
+    sampleRatioNumerator = models.IntegerField()
+    sampleRatioDenominator = models.IntegerField()
+    formatFrameSize = models.CharField(max_length=4, choices=FRAMESIZE_CHOICES)
+    formatAspectRatioNumerator = models.IntegerField()
+    formatAspectRatioDenominator = models.IntegerField()
+    #formatFrameRate	integer; no see http://www.pbcore.org/PBCore/formatFrameRate.html ss picklist
+    formatFrameRate = models.CharField(max_length=255)
+    fileCreated = models.DateField(null=True, blank=True)
+    # formatFrameSize	integer (in pixels per line) no; 
+    #     see http://www.pbcore.org/PBCore/formatFrameSize.html ss picklist
+    formatTracks = models.CharField(max_length=255) 
+    formatChannelConfiguration = models.CharField(max_length=255) 
+    # soundChannels	integer
+    # soundLinear	sound linear -- embedded -- both
+    # soundAnnotation	mono -- stereo -- surround
+    mixType = models.CharField(max_length=4, choices=MIX_TYPE_CHOICES)
+    offloadDate = models.DateField(null=True, blank=True)
     #
 
     # 5 Provenance + Preservation
     # this block is all opitonal
-    #sourceDeck	255 char
-    #digitizer	255 char
-    #encodingApplication	255 char
-    #transferHardware	255 char
-    #transferSoftware	255 char
-    #Processing hardware	255 char
-    #Processing software	255 char
-    #transferVendor	255 char
-    #transferOperator	255 char
-    #transferDate	date
-    #transferNotes	255 char
-    #checksum	integer
-    #checksumKind	MD5
-    #checksumDate	date
-    #renderingHardware	255 char
-    #renderingSoftware	255 char
-    #fileValidationSoftware	JHOVE2 -- Terminal
-    #qualityControlComments	255 char
-    #qualityControlDate	date
-    #qualityControlInitials	255 char
-    #qualityControlActions	255 char
-    #additionalEvent	Ingested -- Migrated -- Backed-up -- Obsolescence rating
-    #additionalEventNotes	255 char
-    #viewingEnvironment	255 char
+    sourceDeck = models.CharField(max_length=255, blank=True)
+    digitizer = models.CharField(max_length=255, blank=True)
+    encodingApplication = models.CharField(max_length=255, blank=True)
+    transferHardware = models.CharField(max_length=255, blank=True)
+    transferSoftware = models.CharField(max_length=255, blank=True)
+    processingHardware = models.CharField(max_length=255, blank=True)
+    processingSoftware = models.CharField(max_length=255, blank=True)
+    transferVendor = models.CharField(max_length=255, blank=True)
+    transferOperator = models.CharField(max_length=255, blank=True)
+    transferDate = models.DateField(null=True, blank=True)
+    transferNotes = models.CharField(max_length=255, blank=True)
+    # checksum	integer (checksums are not usually stored or expressed as ints)
+    # checksumKind	MD5
+    md5Checksum = models.CharField(max_length=255, blank=True)
+    checksumDate = models.DateField(null=True, blank=True)
+    renderingHardware = models.CharField(max_length=255, blank=True)
+    renderingSoftware = models.CharField(max_length=255, blank=True)
+    fileValidationSoftware = models.CharField(max_length=4, choices=VALIDATION_SOFTWARE_CHOICES)
+    qualityControlComments = models.CharField(max_length=255, blank=True)
+    qualityControlDate = models.DateField(null=True, blank=True)
+    qualityControlInitials = models.CharField(max_length=255, blank=True)
+    qualityControlActions = models.CharField(max_length=255, blank=True)
+    additionalEvent = models.CharField(max_length=4, choices=EVENT_CHOICES)
+    additionalEventNotes = models.CharField(max_length=255, blank=True)
+    viewingEnvironment = models.CharField(max_length=255, blank=True)
     
     def __unicode__(self):
         return self.fileName
