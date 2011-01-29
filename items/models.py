@@ -129,11 +129,12 @@ EVENT_CHOICES = (
 )
 
 class Item(models.Model):
-    title = models.CharField(max_length=200)
+    # 1 Descriptive + Technical
+    title = models.CharField(max_length=255)
     contributor = models.ForeignKey(Institution)
-    projectId = models.CharField(max_length=200)
-    localId = models.CharField(max_length=200)
-    aggregatorId = models.CharField(max_length=200)
+    projectId = models.CharField(max_length=255)
+    localId = models.CharField(max_length=255)
+    aggregatorId = models.CharField(max_length=255)
     creatorWriter = models.ForeignKey(Name, related_name="writer", null=True, blank=True)
     creatorDirector = models.ForeignKey(Name, related_name="director", null=True, blank=True)
     creatorProducer = models.ForeignKey(Name, related_name="producer", null=True, blank=True)
@@ -144,22 +145,23 @@ class Item(models.Model):
     physicalFormat = models.CharField(max_length=4, choices=PHYSICAL_FORMAT_CHOICES)
     silent = models.CharField(max_length=4, choices=SOUND_CHARACTERISTICS_CHOICES)
     formatColors = models.CharField(max_length=4, choices=COLORS_CHOICES)
-    runningSpeed = models.CharField(max_length=200)
+    runningSpeed = models.CharField(max_length=255)
     totalReels = models.IntegerField()
     formatGeneration = models.CharField(max_length=4, choices=GENERATION_CHOICES)
-    formatDuration = models.CharField(max_length=200)
-    fileNameUniquePart = models.CharField(max_length=200)
+    formatDuration = models.CharField(max_length=255)
+    fileNameUniquePart = models.CharField(max_length=255)
 
-    alternativeTitle = models.CharField(max_length=200, blank=True)
-    seriesTitle = models.CharField(max_length=200, blank=True)
-    contributorEditor = models.CharField(max_length=200, blank=True)
-    contributorCamera = models.CharField(max_length=200, blank=True)
-    contributorSound = models.CharField(max_length=200, blank=True)
-    contributorMusic = models.CharField(max_length=200, blank=True)
-    contributorCast = models.CharField(max_length=200, blank=True) 
-    contributorMusician = models.CharField(max_length=200, blank=True)
-    contributorPublisher = models.CharField(max_length=200, blank=True)
-    contributorDistributor = models.CharField(max_length=200, blank=True)
+    # 2 Additional Descriptive
+    alternativeTitle = models.CharField(max_length=255, blank=True)
+    seriesTitle = models.CharField(max_length=255, blank=True)
+    contributorEditor = models.CharField(max_length=255, blank=True)
+    contributorCamera = models.CharField(max_length=255, blank=True)
+    contributorSound = models.CharField(max_length=255, blank=True)
+    contributorMusic = models.CharField(max_length=255, blank=True)
+    contributorCast = models.CharField(max_length=255, blank=True) 
+    contributorMusician = models.CharField(max_length=255, blank=True)
+    contributorPublisher = models.CharField(max_length=255, blank=True)
+    contributorDistributor = models.CharField(max_length=255, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)
     descriptionGeneralNote = models.TextField(blank=True)
     descriptionAbstract = models.TextField(blank=True)
@@ -170,20 +172,89 @@ class Item(models.Model):
     subjectName = models.ForeignKey(Name, related_name="subject_name", null=True, blank=True)
     subjectPlace = models.ForeignKey(Place, null=True, blank=True)
     subjectTopic = models.ForeignKey(Topic, null=True, blank=True)
-    genreForm = models.CharField(max_length=200, blank=True)
+    genreForm = models.CharField(max_length=255, blank=True)
 
-    stockManufacturer = models.CharField(max_length=200, blank=True)
+    # 4 additional technical 
+    stockManufacturer = models.CharField(max_length=255, blank=True)
     formatStandard = models.CharField(max_length=4, blank=True, choices=VIDEO_STANDARD_CHOICES)
     carrierFormat = models.CharField(max_length=4, blank=True, choices=VIDEO_ENCODING_CHOICES)
-    carrierId = models.CharField(max_length=200, blank=True)
-    carrierPartNumber = models.CharField(max_length=200, blank=True)
-    carrierAdditionalPhysicalDescription = models.CharField(max_length=200, blank=True)
-    carrierCondition = models.CharField(max_length=200, blank=True)
+    carrierId = models.CharField(max_length=255, blank=True)
+    carrierPartNumber = models.CharField(max_length=255, blank=True)
+    carrierAdditionalPhysicalDescription = models.CharField(max_length=255, blank=True)
+    carrierCondition = models.CharField(max_length=255, blank=True)
     carrierAssessedDate = models.DateField(null=True, blank=True)
+
+    # 6 Rights
+    #copyrightStatus
+    #[autogenerate statements based on template somehow]
+    #copyrightHolder
+    #copyrightHolder Info
+    #copyrightDate
+    #copyrightNotice
         
     def __unicode__(self):
         return self.title
     
 class DigitalFile(models.Model):
-    fileName = models.CharField(max_length=200)
+    # 3 Technical
+    fileName = models.CharField(max_length=255)
     master = models.ForeignKey(Item)
+    state = models.CharField(max_length=4, choices=STATE_CHOICES)
+    formatDigital = models.CharField(max_length=4, choices=DIGITAL_CHOICES)
+    formatDigitalLocation = models.CharField(max_length=255)
+    # formatPhysical medium manufacturer & model (?) # still think this sounds like a property of the tape / pyhsical media
+    formatPhysicalStorageMedium = models.CharField(max_length=255)
+    formatDefinition = models.CharField(max_length=4, choices=DEFINITION_CHOICES)
+    # formatStandard + version
+    fourCC = models.CharField(max_length=4)			# http://www.fourcc.org/codecs.php
+
+    # formatEncoding	255 char
+    # codecQuality	lossless -- lossy
+    #formatDataRate	integer (in Mbps)
+    #formatBitDepth	10 bit -- 8 bit
+    #formatSamplingRate	fixed -- variable
+    #formatFileSize	integer 
+    #formatTimeStart	timecode
+    #sampleRatio	ratio of integers
+    #formatFrameSize	525 -- 625 -- 720 -- 1080
+    #formatAspectRatio	ratio of integers
+    #formatFrameRate	integer
+    #fileCreated	date
+    #formatFrameSize	integer (in pixels per line)
+    #formatChannelConfiguration	255 char
+    #soundChannels	integer
+    #soundLinear	sound linear -- embedded -- both
+    #soundAnnotation	mono -- stereo -- surround
+    #mixType	music -- dialogue and music -- interview -- field recording
+    #offloadDate	date
+    #
+
+    # 5 Provenance + Preservation
+    # this block is all opitonal
+    #sourceDeck	255 char
+    #digitizer	255 char
+    #encodingApplication	255 char
+    #transferHardware	255 char
+    #transferSoftware	255 char
+    #Processing hardware	255 char
+    #Processing software	255 char
+    #transferVendor	255 char
+    #transferOperator	255 char
+    #transferDate	date
+    #transferNotes	255 char
+    #checksum	integer
+    #checksumKind	MD5
+    #checksumDate	date
+    #renderingHardware	255 char
+    #renderingSoftware	255 char
+    #fileValidationSoftware	JHOVE2 -- Terminal
+    #qualityControlComments	255 char
+    #qualityControlDate	date
+    #qualityControlInitials	255 char
+    #qualityControlActions	255 char
+    #additionalEvent	Ingested -- Migrated -- Backed-up -- Obsolescence rating
+    #additionalEventNotes	255 char
+    #viewingEnvironment	255 char
+    
+    def __unicode__(self):
+        return self.fileName
