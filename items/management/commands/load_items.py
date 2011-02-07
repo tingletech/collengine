@@ -19,7 +19,7 @@ import django.core.management.base as mb
 from item.models import Item
 
 class Command(BaseCommand):
-    help = "For loading Josiah exports for reports."
+    help = "For loading CSV files into database."
     option_list = BaseCommand.option_list + (
         make_option('-f', '--file', dest='source_file',
                     help='Loads Items.  Need specific format identified in new items.'),
