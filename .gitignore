@@ -1,0 +1,8 @@
+*.pyc
+.gaedata/*
+dbindexer/*
+django-dbindexer/*
+django-nonrel/*
+django/*
+djangoappengine/*
+djangotoolbox/*
