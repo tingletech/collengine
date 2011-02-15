@@ -20,6 +20,8 @@ PHYSICAL_FORMAT_CHOICES = (
   ('4ac', '1/4" audiocassette',),
   ('4aor', '1/4" audio open reel',),
   ('2vor', '1/2" video open reel',),
+  ('2cas', '1/2" video cassette',),
+  ('3cas', '3/4" video cassette',),
   ('35fl', '35 mm film',),
   ('16fl', '16 mm film',),
   ('8fl', '8 mm film',),
@@ -140,8 +142,8 @@ class Item(models.Model):
     localId = models.CharField(max_length=255)
     aggregatorId = models.CharField(max_length=255)
     creatorWriter = ListField(models.ForeignKey(Name, related_name="writer", null=True, blank=True), null=True, blank=True)
-    creatorDirector = models.ForeignKey(Name, related_name="director", null=True, blank=True)
-    creatorProducer = models.ForeignKey(Name, related_name="producer", null=True, blank=True)
+    creatorDirector = ListField(models.ForeignKey(Name, related_name="director", null=True, blank=True), null=True, blank=True)
+    creatorProducer = ListField(models.ForeignKey(Name, related_name="producer", null=True, blank=True), null=True, blank=True)
     countryOfCreation = models.CharField(max_length=2)
     dateCreated = models.DateField()
     dateIssued = models.DateField(null=True, blank=True)
@@ -158,14 +160,14 @@ class Item(models.Model):
     # 2 Additional Descriptive
     alternativeTitle = models.CharField(max_length=255, blank=True)
     seriesTitle = models.CharField(max_length=255, blank=True)
-    contributorEditor = models.CharField(max_length=255, blank=True)
-    contributorCamera = models.CharField(max_length=255, blank=True)
-    contributorSound = models.CharField(max_length=255, blank=True)
-    contributorMusic = models.CharField(max_length=255, blank=True)
-    contributorCast = models.CharField(max_length=255, blank=True) 
-    contributorMusician = models.CharField(max_length=255, blank=True)
-    contributorPublisher = models.CharField(max_length=255, blank=True)
-    contributorDistributor = models.CharField(max_length=255, blank=True)
+    contributorEditor = ListField(models.ForeignKey(Name, related_name="editor", null=True, blank=True), null=True, blank=True)
+    contributorCamera = ListField(models.ForeignKey(Name, related_name="camera", null=True, blank=True), null=True, blank=True)
+    contributorSound = ListField(models.ForeignKey(Name, related_name="sound", null=True, blank=True), null=True, blank=True)
+    contributorMusic = ListField(models.ForeignKey(Name, related_name="music", null=True, blank=True), null=True, blank=True)
+    contributorCast = ListField(models.ForeignKey(Name, related_name="cast", null=True, blank=True), null=True, blank=True)
+    contributorMusician = ListField(models.ForeignKey(Name, related_name="musician", null=True, blank=True), null=True, blank=True)
+    contributorPublisher = ListField(models.ForeignKey(Name, related_name="publisher", null=True, blank=True), null=True, blank=True)
+    contributorDistributor = ListField(models.ForeignKey(Name, related_name="distributor", null=True, blank=True), null=True, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)
     descriptionGeneralNote = models.TextField(blank=True)
     descriptionAbstract = models.TextField(blank=True)
@@ -173,9 +175,9 @@ class Item(models.Model):
     descriptionTranscript = models.TextField(blank=True)
     descriptionShotList = models.TextField(blank=True)
     language = models.CharField(max_length=2, blank=True)
-    subjectName = models.ForeignKey(Name, related_name="subject_name", null=True, blank=True)
-    subjectPlace = models.ForeignKey(Place, null=True, blank=True)
-    subjectTopic = models.ForeignKey(Topic, null=True, blank=True)
+    subjectName = ListField(models.ForeignKey(Name, related_name="subject_name", null=True, blank=True), null=True, blank=True)
+    subjectPlace = ListField(models.ForeignKey(Place, null=True, blank=True), null=True, blank=True)
+    subjectTopic = ListField(models.ForeignKey(Topic, null=True, blank=True), null=True, blank=True)
     genreForm = models.CharField(max_length=255, blank=True)
 
     # 4 additional technical 
@@ -206,18 +208,15 @@ class DigitalFile(models.Model):
     state = models.CharField(max_length=4, choices=STATE_CHOICES)
     formatDigital = models.CharField(max_length=4, choices=DIGITAL_CHOICES)
     formatDigitalLocation = models.CharField(max_length=255)
-    # formatPhysical medium manufacturer & model (?) # still think this sounds like a property of the tape / pyhsical media
     formatPhysicalStorageMedium = models.CharField(max_length=255)
     formatDefinition = models.CharField(max_length=4, choices=DEFINITION_CHOICES)
-    # formatStandard + version
-    fourCC = models.CharField(max_length=4)			# http://www.fourcc.org/codecs.php
+    #formatStandardVersion = models.CharField(max_length=4, choices=DEFINITION_CHOICES)
+    codexFourCC = models.CharField(max_length=4)	# http://www.fourcc.org/codecs.php
+
 
     formatEncoding = models.CharField(max_length=255)
     codecQuality = models.CharField(max_length=4, choices=CODEC_QUALITY_CHOICES)
-    # formatDataRate	integer (in Mbps)
     formatDataRate = models.CharField(max_length=255)
-    # integer won't work, see http://www.pbcore.org/PBCore/formatDataRate.html
-    #      models.DecimalField(..., max_digits=5, decimal_places=2)
     formatBitDepth = models.CharField(max_length=4, choices=BITDEPTH_CHOICES)
     formatSamplingRate = models.CharField(max_length=4, choices=SAMPLING_RATE_CHOICES)
     fileSizeBytes = models.IntegerField()
@@ -227,16 +226,14 @@ class DigitalFile(models.Model):
     formatFrameSize = models.CharField(max_length=4, choices=FRAMESIZE_CHOICES)
     formatAspectRatioNumerator = models.IntegerField()
     formatAspectRatioDenominator = models.IntegerField()
-    #formatFrameRate	integer; no see http://www.pbcore.org/PBCore/formatFrameRate.html ss picklist
+    formatFrameSize = models.CharField(max_length=255)
     formatFrameRate = models.CharField(max_length=255)
     fileCreated = models.DateField(null=True, blank=True)
-    # formatFrameSize	integer (in pixels per line) no; 
-    #     see http://www.pbcore.org/PBCore/formatFrameSize.html ss picklist
     formatTracks = models.CharField(max_length=255) 
     formatChannelConfiguration = models.CharField(max_length=255) 
-    # soundChannels	integer
-    # soundLinear	sound linear -- embedded -- both
-    # soundAnnotation	mono -- stereo -- surround
+    soundChannels = models.IntegerField()
+    soundLinear = models.CharField(max_length=4, choices=SOUND_LINEAR_CHOICES)
+    soundAnnotation = models.CharField(max_length=4, choices=SOUND_ANNOTATION_CHOICES)
     mixType = models.CharField(max_length=4, choices=MIX_TYPE_CHOICES)
     offloadDate = models.DateField(null=True, blank=True)
     #
