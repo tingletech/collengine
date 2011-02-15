@@ -9,6 +9,7 @@ class DigitalFileInline(admin.TabularInline):
 #class DigitalFileInline(admin.StackedInline):
     model = DigitalFile
 
+# http://www.hindsightlabs.com/blog/2010/02/11/adding-extra-fields-to-a-model-form-in-djangos-admin/
 class ItemForm(ModelForm):
     creatorWriter = forms.ModelMultipleChoiceField(queryset=Name.objects.all(), required=False, )
     class Meta:
