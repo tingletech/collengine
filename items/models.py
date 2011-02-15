@@ -1,9 +1,11 @@
-from djangotoolbox.fields import ListField, SetField, DictField, EmbeddedModelField
+#from djangotoolbox.fields import ListField, SetField, DictField, EmbeddedModelField
+from .fields import MyListField as ListField
 from institutions.models import Institution
 from archival_collections.models import Collection
 from vocabularies.models import Name, Place, Topic
 from django.db import models
 from django.contrib import admin
+
 
 # Create your models here.
 
@@ -137,7 +139,7 @@ class Item(models.Model):
     projectId = models.CharField(max_length=255)
     localId = models.CharField(max_length=255)
     aggregatorId = models.CharField(max_length=255)
-    creatorWriter = models.ForeignKey(Name, related_name="writer", null=True, blank=True)
+    creatorWriter = ListField(models.ForeignKey(Name, related_name="writer", null=True, blank=True), null=True, blank=True)
     creatorDirector = models.ForeignKey(Name, related_name="director", null=True, blank=True)
     creatorProducer = models.ForeignKey(Name, related_name="producer", null=True, blank=True)
     countryOfCreation = models.CharField(max_length=2)
