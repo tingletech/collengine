@@ -17,10 +17,7 @@ class ItemForm(ModelForm):
     def save(self, commit=True):
         model = super(ItemForm, self).save(commit=False)
         ## turn querySet into List
-        creatorWriterList = []
-	for e in model.creatorWriter:
-            creatorWriterList.append(e.id)
-        model.creatorWriter = creatorWriterList
+        model.creatorWriter = [name.id for name in model.creatorWriter]
 
         if commit:
             model.save()
