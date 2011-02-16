@@ -110,6 +110,10 @@ INSTALLED_APPS = (
     'archival_collections',
 )
 
+AUTHENTICATION_BACKENDS = (
+     'permission_backend_nonrel.backends.NonrelPermissionBackend',
+)
+
 # This test runner captures stdout and associates tracebacks with their
 # corresponding output. Helps a lot with print-debugging.
 TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
