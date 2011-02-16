@@ -5,7 +5,7 @@ from django.db import models
 
 class Collection(models.Model):
     name = models.CharField(max_length=200)
-    ark = models.CharField(max_length=40)
+    ark = models.CharField(max_length=40, blank=True)
 
     def __unicode__(self):
-        return self.label
+        return self.name
