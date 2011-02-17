@@ -7,3 +7,4 @@ django-nonrel/*
 django/*
 djangoappengine/*
 djangotoolbox/*
+permission_backend_nonrel/*
