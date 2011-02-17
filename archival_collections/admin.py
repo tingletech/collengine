@@ -1,4 +1,8 @@
 from .models import Collection
 from django.contrib import admin
+from django_tablib.admin import TablibAdmin
 
-admin.site.register(Collection)
+class CollectionAdmin(TablibAdmin):
+    formats = ['xls', 'json', 'yaml', 'csv', 'html',]
+
+admin.site.register(Collection, CollectionAdmin)

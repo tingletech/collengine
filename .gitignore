@@ -8,3 +8,6 @@ django/*
 djangoappengine/*
 djangotoolbox/*
 permission_backend_nonrel/*
+django_tablib/*
+tablib/*
+

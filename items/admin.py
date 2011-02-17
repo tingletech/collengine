@@ -1,5 +1,6 @@
 from .models import Item, DigitalFile
 from django.contrib import admin
+from django_tablib.admin import TablibAdmin
 from django import forms
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django.contrib.admin.widgets import FilteredSelectMultiple
@@ -95,7 +96,8 @@ class ItemForm(ModelForm):
         return model
 
 
-class ItemAdmin(admin.ModelAdmin):
+#class ItemAdmin(admin.ModelAdmin):
+class ItemAdmin(TablibAdmin):
     fieldsets = (
         ('Descriptive + Technical', {
             'fields': ('title', 'contributor', 'projectId', 'localId', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'physicalFormat', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', 'fileNameUniquePart',),
@@ -114,7 +116,10 @@ class ItemAdmin(admin.ModelAdmin):
         DigitalFileInline,
     ]
     form = ItemForm
+    formats = ['xls', 'json', 'yaml', 'csv', 'html',]
 
+class DigitalFileAdmin(TablibAdmin):
+    formats = ['xls', 'json', 'yaml', 'csv', 'html',]
 
 admin.site.register(Item, ItemAdmin)
-admin.site.register(DigitalFile)
+admin.site.register(DigitalFile, DigitalFileAdmin)
