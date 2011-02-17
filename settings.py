@@ -100,10 +100,11 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'djangoappengine',
     'django.contrib.admin',
-    'django.contrib.auth',
+    # 'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'djangotoolbox',
+    'permission_backend_nonrel',
     'items',
     'vocabularies',
     'institutions',
