@@ -145,7 +145,7 @@ class Item(models.Model):
     creatorDirector = ListField(models.ForeignKey(Name, related_name="director", null=True, blank=True), null=True, blank=True)
     creatorProducer = ListField(models.ForeignKey(Name, related_name="producer", null=True, blank=True), null=True, blank=True)
     countryOfCreation = models.CharField(max_length=2)
-    dateCreated = models.DateField()
+    dateCreated = models.DateField(null=True, blank=True)
     dateIssued = models.DateField(null=True, blank=True)
     formatMediaType = models.CharField(max_length=4, choices=MEDIA_TYPE_CHOICES)
     physicalFormat = models.CharField(max_length=4, choices=PHYSICAL_FORMAT_CHOICES)
