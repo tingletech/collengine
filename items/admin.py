@@ -98,9 +98,12 @@ class ItemForm(ModelForm):
 
 #class ItemAdmin(admin.ModelAdmin):
 class ItemAdmin(TablibAdmin):
+    search_fields = [ 'title', 'projectId', 'localId', 'sourceId', 'barcode', 'aggregatorId', ]
+    list_display = ( 'title', )
+    list_filter = ( 'formatMediaType', )
     fieldsets = (
         ('Descriptive + Technical', {
-            'fields': ('title', 'contributor', 'projectId', 'localId', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'physicalFormat', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', 'fileNameUniquePart',),
+            'fields': ('title', 'contributor', 'projectId', 'localId', 'sourceId', 'barcode', 'aggregatorId', 'creatorWriter', 'creatorDirector', 'creatorProducer', 'countryOfCreation', 'dateCreated', 'dateIssued', 'formatMediaType', 'physicalFormat', 'silent', 'formatColors', 'runningSpeed', 'totalReels', 'formatGeneration', 'formatDuration', ),
             'description': 'description blah blah'
         }),
         ('Additional Descriptive', {

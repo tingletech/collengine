@@ -142,7 +142,9 @@ class Item(models.Model):
     contributor = models.ForeignKey(Institution)
     projectId = models.CharField(max_length=255)
     localId = models.CharField(max_length=255)
+    sourceId = models.CharField(max_length=255)
     aggregatorId = models.CharField(max_length=255)
+    barcode = models.CharField(max_length=255)
     creatorWriter = ListField(models.ForeignKey(Name, related_name="writer", null=True, blank=True), null=True, blank=True)
     creatorDirector = ListField(models.ForeignKey(Name, related_name="director", null=True, blank=True), null=True, blank=True)
     creatorProducer = ListField(models.ForeignKey(Name, related_name="producer", null=True, blank=True), null=True, blank=True)
@@ -157,10 +159,10 @@ class Item(models.Model):
     totalReels = models.IntegerField()
     formatGeneration = models.CharField(max_length=4, choices=GENERATION_CHOICES)
     formatDuration = models.CharField(max_length=255)
-    fileNameUniquePart = models.CharField(max_length=255)
 
     # 2 Additional Descriptive
     alternativeTitle = models.CharField(max_length=255, blank=True)
+    inscription = models.CharField(max_length=255, blank=True)
     seriesTitle = models.CharField(max_length=255, blank=True)
     contributorEditor = ListField(models.ForeignKey(Name, related_name="editor", null=True, blank=True), null=True, blank=True)
     contributorCamera = ListField(models.ForeignKey(Name, related_name="camera", null=True, blank=True), null=True, blank=True)
