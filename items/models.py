@@ -42,6 +42,8 @@ GENERATION_CHOICES = (
   ('orig', 'camera original', ),
   ('mast', 'master',),
   ('subm', 'submaster'),
+  ('copy', 'copy'),
+  ('prin', 'print'),
   ('unkn', 'unknown'),
 )
 
