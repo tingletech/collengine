@@ -150,7 +150,7 @@ class Item(models.Model):
     dateCreated = models.DateField(null=True, blank=True)
     dateIssued = models.DateField(null=True, blank=True)
     formatMediaType = models.CharField(max_length=4, choices=MEDIA_TYPE_CHOICES)
-    physicalFormat = models.CharField(max_length=4, choices=PHYSICAL_FORMAT_CHOICES)
+    physicalFormat = models.CharField(max_length=4, choices=PHYSICAL_FORMAT_CHOICES, null=True, blank=True)
     silent = models.CharField(max_length=4, choices=SOUND_CHARACTERISTICS_CHOICES)
     formatColors = models.CharField(max_length=4, choices=COLORS_CHOICES)
     runningSpeed = models.CharField(max_length=255)
