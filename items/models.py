@@ -144,7 +144,7 @@ class Item(models.Model):
     localId = models.CharField(max_length=255)
     sourceId = models.CharField(max_length=255)
     aggregatorId = models.CharField(max_length=255)
-    barcode = models.CharField(max_length=255)
+    barcode = models.CharField(max_length=255, null=True, blank=True)
     creatorWriter = ListField(models.ForeignKey(Name, related_name="writer", null=True, blank=True), null=True, blank=True)
     creatorDirector = ListField(models.ForeignKey(Name, related_name="director", null=True, blank=True), null=True, blank=True)
     creatorProducer = ListField(models.ForeignKey(Name, related_name="producer", null=True, blank=True), null=True, blank=True)
