@@ -3,11 +3,11 @@
 set -eux
 rm -rf django djangoappengine djangotoolbox django-dbindexer dbindexer django-nonrel permission_backend_nonrel
 rm -rf tablib django_tablib
-curl https://bitbucket.org/wkornewald/django-nonrel/get/tip.tar.gz | tar zxf -
-curl https://bitbucket.org/wkornewald/djangoappengine/get/tip.tar.gz | tar zxf -
-curl https://bitbucket.org/wkornewald/djangotoolbox/get/tip.tar.gz | tar zxf -
-curl https://bitbucket.org/wkornewald/django-dbindexer/get/tip.tar.gz | tar zxf -
-curl https://bitbucket.org/fhahn/django-permission-backend-nonrel/get/tip.tar.gz | tar zxf -
+hg clone https://bitbucket.org/wkornewald/django-nonrel
+hg clone https://bitbucket.org/wkornewald/djangoappengine
+hg clone https://bitbucket.org/wkornewald/djangotoolbox
+hg clone https://bitbucket.org/wkornewald/django-dbindexer
+hg clone https://bitbucket.org/fhahn/django-permission-backend-nonrel
 curl http://pypi.python.org/packages/source/t/tablib/tablib-0.9.4.tar.gz | tar zxf -
 curl http://pypi.python.org/packages/source/d/django-tablib/django-tablib-2.2.1.tar.gz | tar zxf -
 mv django-nonrel/django django
